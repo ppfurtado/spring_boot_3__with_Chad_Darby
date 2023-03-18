@@ -1,4 +1,4 @@
-package com.ppfurtado.springdemo;
+package com.ppfurtado.util;
 
 public interface Coach {
 
