@@ -5,44 +5,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class DemoSecurityConfig {
 
+
     @Bean
-    public InMemoryUserDetailsManager userDetailsManager() {
+    public UserDetailsManager userDetailsManager(DataSource dataSource){
 
 
-        UserDetails pedro = User.builder()
-                .username("pedro")
-                .password("{noop}pedro")
-                .roles("EMPLOYEE")
-                .build();
-
-        UserDetails kelly = User.builder()
-                .username("kelly")
-                .password("{noop}kelly")
-                .roles("EMPLOYEE", "MANAGER")
-                .build();
-
-        UserDetails lucas = User.builder()
-                .username("lucas")
-                .password("{noop}lucas")
-                .roles("EMPLOYEE", "MANAGER", "ADMIN")
-                .build();
-
-        UserDetails bibi = User.builder()
-                .username("bibi")
-                .password("{noop}bibi")
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(pedro, kelly, lucas, bibi);
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     @Bean
@@ -63,4 +41,5 @@ public class DemoSecurityConfig {
 
         return http.build();
     }
+
 }
